@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @EnableAsync
 @Configuration
-public class AsyncConfig{
+public class AsyncConfig {
 
     @Value(value="${mytask.execution.pool.core-size}")
     private String CORE_SIZE;
@@ -48,7 +48,6 @@ public class AsyncConfig{
         executor.initialize();
         return executor;
     }
-
 }
 
 

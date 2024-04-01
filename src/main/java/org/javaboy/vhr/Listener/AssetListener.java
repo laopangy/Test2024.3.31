@@ -15,7 +15,6 @@ import java.util.Objects;
 @Component
 public class AssetListener extends AnalysisEventListener<Asset> {
 
-
     private static final int count = 500;
     private static int i = 0;
 
@@ -46,9 +45,9 @@ public class AssetListener extends AnalysisEventListener<Asset> {
             throw new RuntimeException("文件中第"+i+"行资产名称为空");
         }if (Objects.isNull(asset.getNumber())){
             throw new RuntimeException("文件中第"+i+"行资产数量为空");
-        }/*if (Objects.isNull(asset.getRemak())){
+        }if (Objects.isNull(asset.getRemake())){
             throw new RuntimeException("文件中第"+i+"行资产备注为空");
-        }*/
+        }
     }
 
     private void saveData(Asset asset){

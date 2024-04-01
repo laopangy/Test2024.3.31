@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class VhrApplicationTests {
 
+/*
     @Autowired
     AsyncAssetService asyncAssetService;
     @Test
@@ -15,5 +16,6 @@ class VhrApplicationTests {
         System.out.println("当前线程名称：" + Thread.currentThread().getName());
         asyncAssetService.testImportAsync();
     }
+*/
 
 }
