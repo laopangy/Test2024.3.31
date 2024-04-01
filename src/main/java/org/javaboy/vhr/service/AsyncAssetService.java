@@ -19,10 +19,10 @@ public class AsyncAssetService {
     }
 
     @Async("messageServiceExecutor")
-    public void testAsync(List<Asset> assetList){/* HttpServletResponse response*/
+    public void testAsync(List<Asset> assetList){ /*HttpServletResponse response*/
         System.out.println("==============异步开始==========================");
         System.out.println("当前线程："+Thread.currentThread().getName());
-   /*     response.setCharacterEncoding("UTF-8");
+        /*response.setCharacterEncoding("UTF-8");
         response.setContentType("application/vnd.ms-excel");
         String fileName = "设备信息导出.xlsx";
         response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
@@ -42,7 +42,7 @@ public class AsyncAssetService {
         //生成文件代码
 
         try {
-            Thread.sleep(30000);
+            Thread.sleep(90000);
             int i = assetMapper.updateAssetBySn(assetList);
             System.out.println("运行结果："+i);
             System.out.println("==========休眠结束=======");

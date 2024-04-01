@@ -20,4 +20,10 @@ public class TestController {
         return testService.testImport(file,response);
     }
 
+
+    @PostMapping("/execlUpload")
+    public void execlUpload(HttpServletResponse response) throws Exception{
+        testService.execlUpload(response);
+    }
+
 }

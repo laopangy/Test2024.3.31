@@ -15,7 +15,6 @@ import java.util.Objects;
 @Component
 public class AssetListener extends AnalysisEventListener<Asset> {
 
-
     private static final int count = 500;
     private static int i = 0;
 
@@ -25,12 +24,13 @@ public class AssetListener extends AnalysisEventListener<Asset> {
     public void invoke(Asset asset, AnalysisContext analysisContext) {
         i++;
         //校验
-        verify(asset);
-        saveData(asset);
+//        verify(asset);
+//        saveData(asset);
 //        assetList.add(asset);
 //        if (assetList.size()>=count){
 //
 //        }
+        assetYesList.add(asset);
         System.out.println(i);
 
 
@@ -46,27 +46,27 @@ public class AssetListener extends AnalysisEventListener<Asset> {
             throw new RuntimeException("文件中第"+i+"行资产名称为空");
         }if (Objects.isNull(asset.getNumber())){
             throw new RuntimeException("文件中第"+i+"行资产数量为空");
-        }/*if (Objects.isNull(asset.getRemak())){
+        }if (Objects.isNull(asset.getRemake())){
             throw new RuntimeException("文件中第"+i+"行资产备注为空");
-        }*/
-    }
-
-    private void saveData(Asset asset){
-        AssetMapper assetMapper = SpringContextConfig.getBean(AssetMapper.class);
-        Asset assetBySn = assetMapper.getAssetBySn(asset.getSn());
-        if (Objects.isNull(assetBySn)){
-            assetErrorList.add(asset);//错误信息
-            return;
         }
-        assetYesList.add(asset);
     }
 
-    private void AsyncExeclUpload(List<Asset> assets){
-        System.out.println("当前线程："+Thread.currentThread().getName());
-        AsyncAssetService bean = SpringContextConfig.getBean(AsyncAssetService.class);
-        bean.testAsync(assets);
-//        assetYesList.clear();
-    }
+//    private void saveData(Asset asset){
+//        AssetMapper assetMapper = SpringContextConfig.getBean(AssetMapper.class);
+//        Asset assetBySn = assetMapper.getAssetBySn(asset.getSn());
+//        if (Objects.isNull(assetBySn)){
+//            assetErrorList.add(asset);//错误信息
+//            return;
+//        }
+//        assetYesList.add(asset);
+//    }
+
+//    private void AsyncExeclUpload(List<Asset> assets){
+//        System.out.println("当前线程："+Thread.currentThread().getName());
+//        AsyncAssetService bean = SpringContextConfig.getBean(AsyncAssetService.class);
+//        bean.testAsync(assets);
+////        assetYesList.clear();
+//    }
 
 //    private void ssExeclUpload(List<Asset> assets){
 //        AssetMapper bean = SpringContextConfig.getBean(AssetMapper.class);
@@ -76,7 +76,7 @@ public class AssetListener extends AnalysisEventListener<Asset> {
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         System.out.println(1);
 //        ssExeclUpload(assetYesList);
-        AsyncExeclUpload(assetYesList);
+//        AsyncExeclUpload(assetYesList);
         assetErrorList.clear();
 //        assetYesList.clear();
     }
