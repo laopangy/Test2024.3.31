@@ -50,14 +50,14 @@ public class TestService {
         a1.setName("1");
         a1.setRemake("1");
         a1.setNumber(1);
-        Asset a2 = new Asset();
+     /*   Asset a2 = new Asset();
         a2.setSn("2");
         a2.setName("2");
         a2.setRemake("2");
         a2.setNumber(2);
-        assets.add(a1);
-        assets.add(a2);
 
+        assets.add(a2);*/
+        assets.add(a1);
         //创建一个流，等待写入excel文件内容
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -68,9 +68,10 @@ public class TestService {
         System.out.println(byteArrayOutputStream.size());
 
         //创建inputStream流
-        InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+//        InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         byte[] bytes = byteArrayOutputStream.toByteArray();
-        File file = byteToFile(bytes, "正常数据");
+        String byteToFileName = "src\\\\main\\\\resources\\\\file\\\\正常数据.xlsx";
+        File file = byteToFile(bytes, byteToFileName);
         MultipartFile multipartFilesss = fileToMultipartFile(file);
         try {
             InputStream inputStreamsss = multipartFilesss.getInputStream();
@@ -80,6 +81,7 @@ public class TestService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        deleteTest(byteToFileName);
         //将inputStream流写成文件（查看文件内容是否正确）
       /*  int index;
         byte[] bytes = new byte[1024];
@@ -91,7 +93,7 @@ public class TestService {
 
 
 
-        inputStream.close();
+//        inputStream.close();
 //        downloadFile.close();
 
     }
@@ -141,5 +143,13 @@ public class TestService {
         FileItem fileItem = creatFileItem(file);
         MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
         return multipartFile;
+    }
+    public void deleteTest(String fileName){
+        File myObj = new File(fileName);
+        if (myObj.delete()) {
+            System.out.println("Deleted the folder: " + myObj.getName());
+        } else {
+            System.out.println("Failed to delete the folder.");
+        }
     }
 }
