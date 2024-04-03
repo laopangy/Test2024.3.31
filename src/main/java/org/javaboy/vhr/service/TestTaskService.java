@@ -1,18 +1,24 @@
 package org.javaboy.vhr.service;
 
+import org.javaboy.vhr.Listener.AssetListener;
 import org.javaboy.vhr.base.BaseException;
 import org.javaboy.vhr.constants.TaskConstants;
 import org.javaboy.vhr.exception.ExceptionCodes;
+import org.javaboy.vhr.mapper.AssetMapper;
+import org.javaboy.vhr.model.Asset;
 import org.javaboy.vhr.model.TaskInfo;
 import org.javaboy.vhr.utils.LogUtil;
 import org.javaboy.vhr.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @className    : TestTaskService
@@ -21,14 +27,17 @@ import java.util.Map;
  * @history    : ------------------------------------------------------------------------------
  * date			version		modifier		remarks
  * ------------------------------------------------------------------------------
- * 2022/08/19	1.0.0		sheng.zheng		初版
+ *
  */
 @Service
 public class TestTaskService {
     // 任务管理器
     @Autowired
     private TaskManService taskManService;
-
+    @Autowired
+    UpdateService updateService;
+    @Autowired
+    AssetMapper assetMapper;
     /**
      * @param request : request对象
      * @param params  : 请求参数，形式如下：
@@ -52,28 +61,24 @@ public class TestTaskService {
      * ------------------------------------------------------------------------------
      * 2022/08/19	1.0.0		sheng.zheng		初版
      */
-    public Map<String, Object> addAsyncTask(HttpServletRequest request,
-                                            Map<String, Object> params) {
-        // 参数校验
-        Integer repeat = (Integer) params.get("repeat");
-        if (repeat == null) {
-            repeat = 10;
+    public Map<String, Object> addAsyncTask(MultipartFile file,HttpServletRequest request) {
+        Map<String, Object> params = new HashMap<>();
+
+        InputStream inputStream = null;
+        List<Asset> assetAllData = new ArrayList<>();
+        try {
+            inputStream = file.getInputStream();
+            AssetListener assetListener = new AssetListener();
+            assetAllData = updateService.readImportUpdate(inputStream, Asset.class, assetListener);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        Integer delay = (Integer) params.get("delay");
-        if (delay == null) {
-            delay = 1000;
-        }
-        if (repeat <= 0) {
-            // 参数错误
-            throw new BaseException(ExceptionCodes.ARGUMENTS_ERROR, "repeat");
-        }
-        if (delay <= 10) {
-            // 参数错误
-            throw new BaseException(ExceptionCodes.ARGUMENTS_ERROR, "delay");
-        }
+        params.put("assetAllData",assetAllData);
+
 
         // 任务名称
-        String taskName = "测试任务";
+        String taskName = "领用任务上传Task";
         // 任务处理对象
         Object procObject = this;
         // 任务执行方法
@@ -158,30 +163,26 @@ public class TestTaskService {
 
         // 获取参数
         Map<String, Object> params = (Map<String, Object>) taskInfo.getParams();
-        Integer repeat = (Integer) params.get("repeat");
-        if (repeat == null) {
-            repeat = 10;
-        }
-        Integer delay = (Integer) params.get("delay");
-        if (delay == null) {
-            delay = 1000;
-        }
 
-        String result = "";
+        List<Asset> assetList = (List<Asset>) params.get("assetAllData");
 
-        // 重复n次
-        for (int i = 0; i < repeat; i++) {
-            taskInfo.addLogInfo(TaskConstants.LEVEL_INFO, "处理步骤" + (i + 1));
+        List<Asset> result = new ArrayList<>();
+
+        for (int i = 0; i < assetList.size(); i++) {
+            taskInfo.addLogInfo(TaskConstants.LEVEL_INFO, "处理步骤:"+assetList.get(i).getSn());
             // 显示处理进度
-            taskInfo.setProgress((i + 1) * 1.0 / repeat * 100);
+            taskInfo.setProgress((i + 1) * 1.0 / assetList.size() * 100);
+            Asset assetBySn = assetMapper.getAssetBySnByVIP(assetList.get(i).getSn());
+            if (!Objects.isNull(assetBySn)){
+                result.add(assetBySn);
+            }
             // 延迟delay毫秒
             try {
-                Thread.sleep(delay);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 LogUtil.error(e);
             }
         }
-        result = "OK";
 
         // 处理完毕
         taskInfo.finish(result);

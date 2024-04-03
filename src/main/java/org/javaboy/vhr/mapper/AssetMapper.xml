@@ -14,4 +14,7 @@
                                               #{item.sn}
                                           </foreach>
     </update>
+    <select id="getAssetBySnByVIP" resultType="org.javaboy.vhr.model.Asset">
+        select * from test_pan where sn =  #{sn}
+    </select>
 </mapper>

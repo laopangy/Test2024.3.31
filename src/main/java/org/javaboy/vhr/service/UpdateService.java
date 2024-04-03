@@ -14,7 +14,8 @@ import java.util.List;
 public class UpdateService {
 
 
-    public void readImportUpdate(InputStream inputStream, Class tClass, AssetListener assetListener){
+    public List<Asset> readImportUpdate(InputStream inputStream, Class tClass, AssetListener assetListener){
         EasyExcel.read(inputStream,tClass,assetListener).sheet().doRead();
+        return assetListener.getDatas();
     }
 }

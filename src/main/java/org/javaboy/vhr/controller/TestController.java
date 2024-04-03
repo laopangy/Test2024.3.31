@@ -16,8 +16,13 @@ public class TestController {
     TestService testService;
 
     @PostMapping("/testImport")
-    public String testImport(@RequestParam("file") MultipartFile file, HttpServletResponse response){
-        return testService.testImport(file,response);
+    public String testImport(@RequestParam("file") MultipartFile file){
+        return testService.testImport(file);
+    }
+
+    @PostMapping("/easyExeclTest")
+    public void easyExeclTest(HttpServletResponse response){
+        testService.easyExeclTest(response);
     }
 
 }

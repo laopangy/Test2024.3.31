@@ -6,9 +6,12 @@ import org.javaboy.vhr.service.TestTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,9 +30,9 @@ public class AsycTestController extends BaseController {
     private TestTaskService tts;
 
     @RequestMapping("/addTask")
-    public BaseResponse<Map<String, Object>> addTask(HttpServletRequest request,
-                                                     @RequestBody Map<String, Object> params) {
-        Map<String, Object> map = tts.addAsyncTask(request, params);
+    public BaseResponse<Map<String, Object>> addTask(@RequestParam("file") MultipartFile file,HttpServletRequest request) {
+
+        Map<String, Object> map = tts.addAsyncTask(file,request);
         return successResponse(map);
     }
 

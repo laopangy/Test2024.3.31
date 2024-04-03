@@ -5,13 +5,18 @@ import lombok.Data;
 
 @Data
 public class Asset {
-    private String id;
-    @ExcelProperty("sn")
+    @ExcelProperty("SN")
     private String sn;
-    @ExcelProperty("资产名称")
-    private String name;
-    @ExcelProperty("资产数量")
-    private Integer number;
-    @ExcelProperty("资产备注")
-    private String remake;
+    @ExcelProperty("关联机器SN")
+    private String relevanceSn;
+    @ExcelProperty("物料名称")
+    private String materialName;
+    @ExcelProperty("站点")
+    private String site;
+    @ExcelProperty("公司主体")
+    private String companyMain;
+    @ExcelProperty("数量")
+    private Integer count;
+    @ExcelProperty("入库原因")
+    private String storageReason;
 }

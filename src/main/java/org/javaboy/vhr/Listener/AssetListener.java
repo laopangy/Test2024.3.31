@@ -15,68 +15,35 @@ import java.util.Objects;
 @Component
 public class AssetListener extends AnalysisEventListener<Asset> {
 
-    private static final int count = 500;
-    private static int i = 0;
 
-    private static List<Asset> assetErrorList = new ArrayList<>();
-    private static List<Asset> assetYesList = new ArrayList<>();
+
+    private List<Asset> assetList = new ArrayList<>();
     @Override
     public void invoke(Asset asset, AnalysisContext analysisContext) {
-        i++;
-        //校验
-        verify(asset);
-        saveData(asset);
-//        assetList.add(asset);
-//        if (assetList.size()>=count){
-//
-//        }
-        System.out.println(i);
-
-
-    }
-
-
-    //校验数据
-    private void verify(Asset asset){
-        //验证sn是否为空
-        if (Objects.isNull(asset.getSn())){
-            throw new RuntimeException("文件中第"+i+"行sn为空");
-        }else if (Objects.isNull(asset.getName())){
-            throw new RuntimeException("文件中第"+i+"行资产名称为空");
-        }if (Objects.isNull(asset.getNumber())){
-            throw new RuntimeException("文件中第"+i+"行资产数量为空");
-        }if (Objects.isNull(asset.getRemake())){
-            throw new RuntimeException("文件中第"+i+"行资产备注为空");
+        if (!Objects.isNull(asset)){
+            assetList.add(asset);
         }
     }
-
-    private void saveData(Asset asset){
-        AssetMapper assetMapper = SpringContextConfig.getBean(AssetMapper.class);
-        Asset assetBySn = assetMapper.getAssetBySn(asset.getSn());
-        if (Objects.isNull(assetBySn)){
-            assetErrorList.add(asset);//错误信息
-            return;
-        }
-        assetYesList.add(asset);
+    /**
+     * 返回数据
+     *
+     * @return 返回读取的数据集合
+     **/
+    public List<Asset> getDatas() {
+        return assetList;
     }
 
-    private void AsyncExeclUpload(List<Asset> assets){
-        System.out.println("当前线程："+Thread.currentThread().getName());
-        AsyncAssetService bean = SpringContextConfig.getBean(AsyncAssetService.class);
-        bean.testAsync(assets);
-//        assetYesList.clear();
+    /**
+     * 设置读取的数据集合
+     *
+     * @param data 设置读取的数据集合
+     **/
+    public void setData(List<Asset> data) {
+        this.assetList = data;
     }
 
-//    private void ssExeclUpload(List<Asset> assets){
-//        AssetMapper bean = SpringContextConfig.getBean(AssetMapper.class);
-//        bean.updateAssetBySn(assets);
-//    }
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-        System.out.println(1);
-//        ssExeclUpload(assetYesList);
-        AsyncExeclUpload(assetYesList);
-        assetErrorList.clear();
-//        assetYesList.clear();
+
     }
 }
