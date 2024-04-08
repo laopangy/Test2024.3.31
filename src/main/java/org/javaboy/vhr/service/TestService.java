@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.poi.ss.formula.functions.T;
 import org.javaboy.vhr.Listener.AssetListener;
 import org.javaboy.vhr.model.Asset;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,6 +153,14 @@ public class TestService {
 
 
     public void flowUploadGroup(MultipartFile file,Integer flowType){
+    	List<T> list = new ArrayList<>();
+		if (flowType.equals(3)){
+
+		}else if (flowType.equals(2)){
+
+		}
+
+
 		try {
 			InputStream inputStream = file.getInputStream();
 			updateService.readImportUpdate(inputStream, Asset.class, new AssetListener());
@@ -159,5 +168,7 @@ public class TestService {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+
+
 	}
 }
