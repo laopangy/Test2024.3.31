@@ -1,6 +1,5 @@
 package org.javaboy.vhr.service;
 
-import cn.hutool.core.date.TimeInterval;
 import com.alibaba.excel.EasyExcel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +20,11 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
-
 @Service
 @Slf4j
 public class TestService {
     @Autowired
-    UpdateService updateService;
+	ExcelService updateService;
     @Autowired
     AsyncAssetService asyncAssetService;
 
@@ -152,4 +149,15 @@ public class TestService {
             System.out.println("Failed to delete the folder.");
         }
     }
+
+
+    public void flowUploadGroup(MultipartFile file,Integer flowType){
+		try {
+			InputStream inputStream = file.getInputStream();
+			updateService.readImportUpdate(inputStream, Asset.class, new AssetListener());
+			inputStream.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

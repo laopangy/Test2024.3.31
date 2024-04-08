@@ -31,53 +31,16 @@ public class AssetListener extends AnalysisEventListener<Asset> {
 //
 //        }
         assetYesList.add(asset);
-        System.out.println(i);
 
 
     }
 
 
-    //校验数据
-    private void verify(Asset asset){
-        //验证sn是否为空
-        if (Objects.isNull(asset.getSn())){
-            throw new RuntimeException("文件中第"+i+"行sn为空");
-        }else if (Objects.isNull(asset.getName())){
-            throw new RuntimeException("文件中第"+i+"行资产名称为空");
-        }if (Objects.isNull(asset.getNumber())){
-            throw new RuntimeException("文件中第"+i+"行资产数量为空");
-        }if (Objects.isNull(asset.getRemake())){
-            throw new RuntimeException("文件中第"+i+"行资产备注为空");
-        }
-    }
 
-//    private void saveData(Asset asset){
-//        AssetMapper assetMapper = SpringContextConfig.getBean(AssetMapper.class);
-//        Asset assetBySn = assetMapper.getAssetBySn(asset.getSn());
-//        if (Objects.isNull(assetBySn)){
-//            assetErrorList.add(asset);//错误信息
-//            return;
-//        }
-//        assetYesList.add(asset);
-//    }
 
-//    private void AsyncExeclUpload(List<Asset> assets){
-//        System.out.println("当前线程："+Thread.currentThread().getName());
-//        AsyncAssetService bean = SpringContextConfig.getBean(AsyncAssetService.class);
-//        bean.testAsync(assets);
-////        assetYesList.clear();
-//    }
 
-//    private void ssExeclUpload(List<Asset> assets){
-//        AssetMapper bean = SpringContextConfig.getBean(AssetMapper.class);
-//        bean.updateAssetBySn(assets);
-//    }
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-        System.out.println(1);
-//        ssExeclUpload(assetYesList);
-//        AsyncExeclUpload(assetYesList);
-        assetErrorList.clear();
-//        assetYesList.clear();
+
     }
 }

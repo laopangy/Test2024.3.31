@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Service
-public class UpdateService {
+public class ExcelService {
 
 
     public void readImportUpdate(InputStream inputStream, Class tClass, AssetListener assetListener){

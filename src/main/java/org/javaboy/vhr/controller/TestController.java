@@ -1,7 +1,6 @@
 package org.javaboy.vhr.controller;
 
 import org.javaboy.vhr.service.TestService;
-import org.javaboy.vhr.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,4 +25,9 @@ public class TestController {
         testService.execlUpload(response);
     }
 
+	@PostMapping("/flowUploadGroup")
+	@ResponseBody
+	public void flowUploadGroup(MultipartFile file, Integer flowType){
+		testService.flowUploadGroup(file,flowType);
+	}
 }
